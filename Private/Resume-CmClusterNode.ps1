@@ -11,7 +11,7 @@ function Resume-CmClusterNode
         $Name
     )
 
-    Write-Verbose -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Resume-CmClusterNode starting on target $Cluster`:$Name."
+    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Resume-CmClusterNode', $Cluster, $Name)
 
     try
     {
@@ -21,7 +21,7 @@ function Resume-CmClusterNode
     }
     catch
     {
-        Write-Warning -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Failed to Resume $Cluster`:$Name."
+        Write-Verbose -Message ($script:localizedData.failedToResume -f $(Get-FormattedDate), $Cluster, $Name)
         throw $_
     }
 }

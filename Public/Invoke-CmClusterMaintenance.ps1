@@ -85,7 +85,7 @@ function Invoke-CmClusterMaintenance
         $RebootNode
     )
 
-    Write-Verbose -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Invoke-CmClusterMaintenance starting on target $Cluster."
+    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Invoke-CmClusterMaintenance', $Cluster)
 
     # Get Cluster Nodes
     try
@@ -121,8 +121,8 @@ function Invoke-CmClusterMaintenance
         # Setting up the Write-Progress parameter - Splatting
         $writeProgressPrcent = [Math]::Round($i / $clusterNodes.Count * 100)
         $writeProgressParams = @{
-            Activity        = "Performing maintenance on Cluster: $($Cluster.ToUpper()); Node: $($clusterNodes[$i].Name)"
-            Status          = "Node $($i + 1) of $($clusterNodes.Count) currently processing..., Percent Complete: $writeProgressPrcent`%"
+            Activity        = $script:localizedData.progActvFirstMsg -f $Cluster.ToUpper(), $clusterNodes[$i].Name
+            Status          = $script:localizedData.progStatusMsg -f $($i + 1), $clusterNodes.Count, $writeProgressPrcent
             PercentComplete = $writeProgressPrcent
             Id              = 1
         }
@@ -135,29 +135,29 @@ function Invoke-CmClusterMaintenance
         try
         {
             # Suspending current cluster node
-            Write-Progress -Activity "Performing Suspend-CmClusterNode on $($clusterNodes[$i].Name)" -ParentId 1 -PercentComplete (1/8 * 100)
+            Write-Progress -Activity ($script:localizedData.progActvSecMsg -f $clusterNodes[$i].Name) -ParentId 1 -PercentComplete (1 / 8 * 100)
             Suspend-CmClusterNode @suspendCmClusterNodeParams | Out-Null
 
             # Testing successful cluster node SUSPEND operation
-            Write-Progress -Activity "Performing Test-CmClusterNode TestType Suspend on $($clusterNodes[$i].Name)" -ParentId 1 -PercentComplete (2/8 * 100)
+            Write-Progress -Activity ($script:localizedData.progActvThirdMsg -f $clusterNodes[$i].Name) -ParentId 1 -PercentComplete (2 / 8 * 100)
             if (Test-CmClusterNode @PSBoundParameters -TestType Suspend -TimeOut $TimeOut)
             {
                 # If cluster node suspend was successful, stop the cluster node
-                Write-Progress -Activity "Performing Stop-CmClusterNode on $($clusterNodes[$i].Name)" -ParentId 1 -PercentComplete (3/8 * 100)
+                Write-Progress -Activity ($script:localizedData.progActvFourthMsg -f $clusterNodes[$i].Name) -ParentId 1 -PercentComplete (3 / 8 * 100)
                 Stop-CmClusterNode @PSBoundParameters | Out-Null
             }
             else
             {
-                # Otherwise throw an time stamped error
-                throw "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Suspend-CmClusterNode failed for $Cluster`:$($PSBoundParameters.Name)."
+                # Otherwise throw a time stamped error
+                throw ($script:localizedData.failedfunction -f $(Get-FormattedDate), 'Suspend-CmClusterNode', $Cluster, $PSBoundParameters.Name)
             }
 
             # Testing successful cluster node STOP operation
-            Write-Progress -Activity "Performing Test-CmClusterNode TestType Stop on $($clusterNodes[$i].Name)" -ParentId 1 -PercentComplete (4/8 * 100)
+            Write-Progress -Activity ($script:localizedData.progActvFifthMsg -f $clusterNodes[$i].Name) -ParentId 1 -PercentComplete (4 / 8 * 100)
             if (Test-CmClusterNode @PSBoundParameters -TestType Stop -TimeOut $TimeOut)
             {
                 # Setting up Invoke-Command parameters
-                Write-Progress -Activity "Performing Invoke-Command on $($clusterNodes[$i].Name)" -ParentId 1 -PercentComplete (5/8 * 100)
+                Write-Progress -Activity ($script:localizedData.progActvSixthMsg -f $clusterNodes[$i].Name) -ParentId 1 -PercentComplete (5 / 8 * 100)
                 $invokeCmdParams = @{
                     ComputerName = $clusterNodes[$i].Name
                     ErrorAction  = 'Stop'
@@ -187,45 +187,45 @@ function Invoke-CmClusterMaintenance
                 # If the RebootNode param was specified, then Restart-Computer on the current cluster node and wait for PowerShell remoting on the target node before continuing
                 if ($RebootNode)
                 {
-                    Write-Verbose -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Restart-Computer starting on target $Cluster`:$Name."
+                    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Restart-Computer', $Cluster, $Name)
                     Restart-Computer -ComputerName $PSBoundParameters.Name -Wait -For PowerShell -Force
                 }
             }
             else
             {
-                throw "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Stop-CmClusterNode failed for $Cluster`:$($PSBoundParameters.Name)."
+                throw ($script:localizedData.failedfunction -f $(Get-FormattedDate), 'Stop-CmClusterNode', $Cluster, $PSBoundParameters.Name)
             }
 
             # Start the cluster service on the current cluster node
-            Write-Progress -Activity "Performing Start-CmClusterNode on $($clusterNodes[$i].Name)" -ParentId 1 -PercentComplete (6/8 * 100)
+            Write-Progress -Activity ($script:localizedData.progActvSeventhMsg -f $clusterNodes[$i].Name) -ParentId 1 -PercentComplete (6 / 8 * 100)
             Start-CmClusterNode @PSBoundParameters | Out-Null
 
             # Testing successful cluster service START operation
             if (Test-CmClusterNode @PSBoundParameters -TestType Start -TimeOut $TimeOut)
             {
                 # if cluster node START operation was successful, then attempt to resume the cluster node (Unpause)
-                Write-Progress -Activity "Performing Resume-CmClusterNode on $($clusterNodes[$i].Name)" -ParentId 1 -PercentComplete (7/8 * 100)
+                Write-Progress -Activity ($script:localizedData.progActvEightMsg -f $clusterNodes[$i].Name) -ParentId 1 -PercentComplete (7 / 8 * 100)
                 Resume-CmClusterNode @PSBoundParameters | Out-Null
             }
             else
             {
-                throw "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Start-CmClusterNode failed for $Cluster`:$($PSBoundParameters.Name)."
+                throw ($script:localizedData.failedfunction -f $(Get-FormattedDate), 'Start-CmClusterNode', $Cluster, $PSBoundParameters.Name)
             }
 
             # Testing successful cluster RESUME operation
-            Write-Progress -Activity "Performing Test-CmClusterNode TypeType Resume on $($clusterNodes[$i].Name)" -ParentId 1 -PercentComplete (8/8 * 100)
+            Write-Progress -Activity ($script:localizedData.progActvNinthMsg -f $clusterNodes[$i].Name) -ParentId 1 -PercentComplete (8 / 8 * 100)
             if (Test-CmClusterNode @PSBoundParameters -TestType Resume -TimeOut $TimeOut)
             {
-                Write-Verbose -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Invoke-CmClusterMaintenance on $Cluster`:$($PSBoundParameters.Name) Completed."
+                Write-Verbose -Message ($script:localizedData.invokeCmComplete -f $(Get-FormattedDate), $Cluster, $PSBoundParameters.Name)
             }
             else
             {
-                throw "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Resume-CmClusterNode failed for $Cluster`:$($PSBoundParameters.Name)."
+                throw ($script:localizedData.failedfunction -f $(Get-FormattedDate), 'Resume-CmClusterNode', $Cluster, $PSBoundParameters.Name)
             }
         }
         catch
         {
-            Write-Warning -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Operation failed for $Cluster`:$($PSBoundParameters.Name), exiting cluster maintenance."
+            Write-Verbose -Message ($script:localizedData.invokeCmFailed -f $(Get-FormattedDate), $Cluster, $PSBoundParameters.Name)
             throw $_
         }
     }

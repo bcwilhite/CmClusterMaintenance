@@ -15,7 +15,7 @@ function Suspend-CmClusterNode
         $ForceDrain
     )
 
-    Write-Verbose -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Suspend-CmClusterNode starting on target $Cluster`:$Name."
+    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Suspend-CmClusterNode', $Cluster, $Name)
 
     try
     {
@@ -26,7 +26,7 @@ function Suspend-CmClusterNode
     }
     catch
     {
-        Write-Warning -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Failed to Suspend $Cluster`:$Name."
+        Write-Verbose -Message ($script:localizedData.failedToSuspend-f $(Get-FormattedDate), $Cluster, $Name)
         throw $_
     }
 }

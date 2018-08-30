@@ -20,7 +20,7 @@ function Test-CmClusterNode
         $TimeOut = 600
     )
 
-    Write-Verbose -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Test-CmClusterNode starting on target $Cluster`:$Name, test type $TestType."
+    Write-Verbose -Message ($script:localizedData.startingTestType -f $(Get-FormattedDate), $Cluster, $Name, $TestType)
 
     # Removing timeout & TestType / Adding ErrorAction for Get-ClusterNode
     $PSBoundParameters.Remove('TestType') | Out-Null
@@ -47,7 +47,7 @@ function Test-CmClusterNode
         }
         catch
         {
-            Write-Warning -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Failed to query Node Status information from $Cluster`:$Name, Cluster Maintenance has been aborted."
+            Write-Verbose -Message ($script:localizedData.failedToQuery -f $(Get-FormattedDate), $Cluster, $Name)
             throw $_
         }
 
@@ -135,6 +135,6 @@ function Test-CmClusterNode
     }
 
     # return true/false to the calling function
-    Write-Verbose -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Current Node Status - $Cluster`:$Name $($nodeStatus.State) $($nodeStatus.DrainStatus)."
+    Write-Verbose -Message ($script:localizedData.currentNodeState -f $(Get-FormattedDate), $Cluster, $Name, $($nodeStatus.State), $($nodeStatus.DrainStatus))
     return $testResults
 }

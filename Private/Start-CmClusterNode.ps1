@@ -11,7 +11,7 @@ function Start-CmClusterNode
         $Name
     )
 
-    Write-Verbose -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Start-CmClusterNode starting on target $Cluster`:$Name."
+    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Start-CmClusterNode', $Cluster, $Name)
 
     try
     {
@@ -21,7 +21,7 @@ function Start-CmClusterNode
     }
     catch
     {
-        Write-Warning -Message "[$(Get-Date -Format 'yyyy/MM/dd hh:mm:ss')]: Failed to Start $Cluster`:$Name."
+        Write-Verbose -Message ($script:localizedData.failedToStart -f $(Get-FormattedDate), $Cluster, $Name)
         throw $_
     }
 }
