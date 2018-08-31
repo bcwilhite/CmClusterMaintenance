@@ -1,5 +1,5 @@
 ConvertFrom-StringData @'
-    startingOnCluster  = [{0}]: ---'{1}' starting on Cluster "{2}".---
+    startingOnCluster  = [{0}]: '{1}' starting on Cluster "{2}".
     startingOnTarget   = [{0}]: '{1}' starting on Cluster "{2}" Target {3}.
     startingTestType   = [{0}]: 'Test-CmClusterNode' starting on Cluster "{1}" Target "{2}", test type {3}.
     failedToResume     = [{0}]: Failed to Resume Cluster "{1}" Target "{2}".
@@ -19,6 +19,6 @@ ConvertFrom-StringData @'
     progActvSeventhMsg = Performing 'Start-CmClusterNode' on {0}
     progActvEightMsg   = Performing 'Resume-CmClusterNode' on {0}
     progActvNinthMsg   = Performing 'Test-CmClusterNode' TypeType Resume on {0}
-    invokeCmComplete   = [{0}]: ---'Invoke-CmClusterMaintenance' on Cluster "{1}" Target "{2}" Completed.---
+    invokeCmComplete   = [{0}]: 'Invoke-CmClusterMaintenance' on Cluster "{1}" Target "{2}" Completed.
     invokeCmFailed     = [{0}]: Operation failed for Cluster "{1}" Target "{2}", exiting Cluster Maintenance.
 '@
