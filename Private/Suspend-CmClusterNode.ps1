@@ -15,18 +15,20 @@ function Suspend-CmClusterNode
         $ForceDrain
     )
 
-    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Suspend-CmClusterNode', $Cluster, $Name)
+    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Suspend-CmClusterNode', $Cluster.ToUpper(), $Name.ToUpper())
 
     try
     {
         # Try to suspend the target node
-        $PSBoundParameters.Add('Drain', $true)
-        $PSBoundParameters.Add('ErrorAction', 'Stop')
-        Suspend-ClusterNode @PSBoundParameters
+        $clusterNodeParams = $PSBoundParameters
+        $clusterNodeParams.Drain = $true
+        $clusterNodeParams.ErrorAction = 'Stop'
+        $clusterNodeParams.Verbose = $false
+        Suspend-ClusterNode @clusterNodeParams
     }
     catch
     {
-        Write-Verbose -Message ($script:localizedData.failedToSuspend-f $(Get-FormattedDate), $Cluster, $Name)
+        Write-Verbose -Message ($script:localizedData.failedToSuspend-f $(Get-FormattedDate), $Cluster.ToUpper(), $Name.ToUpper())
         throw $_
     }
 }

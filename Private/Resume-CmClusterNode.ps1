@@ -11,17 +11,19 @@ function Resume-CmClusterNode
         $Name
     )
 
-    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Resume-CmClusterNode', $Cluster, $Name)
+    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Resume-CmClusterNode', $Cluster.ToUpper(), $Name.ToUpper())
 
     try
     {
         # Try to suspend the target node
-        $PSBoundParameters.Add('ErrorAction', 'Stop')
-        Resume-ClusterNode @PSBoundParameters
+        $clusterNodeParams = $PSBoundParameters
+        $clusterNodeParams.ErrorAction = 'Stop'
+        $clusterNodeParams.Verbose = $false
+        Resume-ClusterNode @clusterNodeParams
     }
     catch
     {
-        Write-Verbose -Message ($script:localizedData.failedToResume -f $(Get-FormattedDate), $Cluster, $Name)
+        Write-Verbose -Message ($script:localizedData.failedToResume -f $(Get-FormattedDate), $Cluster.ToUpper(), $Name.ToUpper())
         throw $_
     }
 }

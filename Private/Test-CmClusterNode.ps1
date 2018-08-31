@@ -20,12 +20,12 @@ function Test-CmClusterNode
         $TimeOut = 600
     )
 
-    Write-Verbose -Message ($script:localizedData.startingTestType -f $(Get-FormattedDate), $Cluster, $Name, $TestType)
+    Write-Verbose -Message ($script:localizedData.startingTestType -f $(Get-FormattedDate), $Cluster.ToUpper(), $Name.ToUpper(), $TestType)
 
     # Removing timeout & TestType / Adding ErrorAction for Get-ClusterNode
     $PSBoundParameters.Remove('TestType') | Out-Null
     $PSBoundParameters.Remove('TimeOut')  | Out-Null
-    $PSBoundParameters.Add('ErrorAction', 'Stop')
+    $PSBoundParameters.ErrorAction = 'Stop'
 
     # Setting stopwatch to capture elapsed time so that we can break out of the while based on the TimeOut value
     $stopWatch = [System.Diagnostics.Stopwatch]::StartNew()
@@ -47,7 +47,7 @@ function Test-CmClusterNode
         }
         catch
         {
-            Write-Verbose -Message ($script:localizedData.failedToQuery -f $(Get-FormattedDate), $Cluster, $Name)
+            Write-Verbose -Message ($script:localizedData.failedToQuery -f $(Get-FormattedDate), $Cluster.ToUpper(), $Name.ToUpper())
             throw $_
         }
 
@@ -135,6 +135,6 @@ function Test-CmClusterNode
     }
 
     # return true/false to the calling function
-    Write-Verbose -Message ($script:localizedData.currentNodeState -f $(Get-FormattedDate), $Cluster, $Name, $($nodeStatus.State), $($nodeStatus.DrainStatus))
+    Write-Verbose -Message ($script:localizedData.currentNodeState -f $(Get-FormattedDate), $Cluster.ToUpper(), $Name.ToUpper(), $($nodeStatus.State), $($nodeStatus.DrainStatus))
     return $testResults
 }

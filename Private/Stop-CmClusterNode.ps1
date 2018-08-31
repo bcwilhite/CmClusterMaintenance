@@ -11,17 +11,19 @@ function Stop-CmClusterNode
         $Name
     )
 
-    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Stop-CmClusterNode', $Cluster, $Name)
+    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Stop-CmClusterNode', $Cluster.ToUpper(), $Name.ToUpper())
 
     try
     {
         # Try to suspend the target node
-        $PSBoundParameters.Add('ErrorAction', 'Stop')
-        Stop-ClusterNode @PSBoundParameters
+        $clusterNodeParams = $PSBoundParameters
+        $clusterNodeParams.ErrorAction = 'Stop'
+        $clusterNodeParams.Verbose = $false
+        Stop-ClusterNode @clusterNodeParams
     }
     catch
     {
-        Write-Verbose -Message ($script:localizedData.failedToStop-f $(Get-FormattedDate), $Cluster, $Name)
+        Write-Verbose -Message ($script:localizedData.failedToStop-f $(Get-FormattedDate), $Cluster.ToUpper(), $Name.ToUpper())
         throw $_
     }
 }

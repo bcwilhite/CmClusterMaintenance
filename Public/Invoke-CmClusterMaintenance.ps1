@@ -85,7 +85,7 @@ function Invoke-CmClusterMaintenance
         $RebootNode
     )
 
-    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Invoke-CmClusterMaintenance', $Cluster)
+    Write-Verbose -Message ($script:localizedData.startingOnCluster -f $(Get-FormattedDate), 'Invoke-CmClusterMaintenance', $Cluster.ToUpper())
 
     # Get Cluster Nodes
     try
@@ -135,7 +135,7 @@ function Invoke-CmClusterMaintenance
         try
         {
             # Suspending current cluster node
-            Write-Progress -Activity ($script:localizedData.progActvSecMsg -f $clusterNodes[$i].Name) -ParentId 1 -PercentComplete (1 / 8 * 100)
+            Write-Progress -Activity ($script:localizedData.progActvSecondMsg -f $clusterNodes[$i].Name) -ParentId 1 -PercentComplete (1 / 8 * 100)
             Suspend-CmClusterNode @suspendCmClusterNodeParams | Out-Null
 
             # Testing successful cluster node SUSPEND operation
@@ -149,7 +149,7 @@ function Invoke-CmClusterMaintenance
             else
             {
                 # Otherwise throw a time stamped error
-                throw ($script:localizedData.failedfunction -f $(Get-FormattedDate), 'Suspend-CmClusterNode', $Cluster, $PSBoundParameters.Name)
+                throw ($script:localizedData.failedfunction -f $(Get-FormattedDate), 'Suspend-CmClusterNode', $Cluster.ToUpper(), $PSBoundParameters.Name)
             }
 
             # Testing successful cluster node STOP operation
@@ -187,13 +187,13 @@ function Invoke-CmClusterMaintenance
                 # If the RebootNode param was specified, then Restart-Computer on the current cluster node and wait for PowerShell remoting on the target node before continuing
                 if ($RebootNode)
                 {
-                    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Restart-Computer', $Cluster, $Name)
+                    Write-Verbose -Message ($script:localizedData.startingOnTarget -f $(Get-FormattedDate), 'Restart-Computer', $Cluster.ToUpper(), $Name)
                     Restart-Computer -ComputerName $PSBoundParameters.Name -Wait -For PowerShell -Force
                 }
             }
             else
             {
-                throw ($script:localizedData.failedfunction -f $(Get-FormattedDate), 'Stop-CmClusterNode', $Cluster, $PSBoundParameters.Name)
+                throw ($script:localizedData.failedfunction -f $(Get-FormattedDate), 'Stop-CmClusterNode', $Cluster.ToUpper(), $PSBoundParameters.Name)
             }
 
             # Start the cluster service on the current cluster node
@@ -209,23 +209,23 @@ function Invoke-CmClusterMaintenance
             }
             else
             {
-                throw ($script:localizedData.failedfunction -f $(Get-FormattedDate), 'Start-CmClusterNode', $Cluster, $PSBoundParameters.Name)
+                throw ($script:localizedData.failedfunction -f $(Get-FormattedDate), 'Start-CmClusterNode', $Cluster.ToUpper(), $PSBoundParameters.Name)
             }
 
             # Testing successful cluster RESUME operation
             Write-Progress -Activity ($script:localizedData.progActvNinthMsg -f $clusterNodes[$i].Name) -ParentId 1 -PercentComplete (8 / 8 * 100)
             if (Test-CmClusterNode @PSBoundParameters -TestType Resume -TimeOut $TimeOut)
             {
-                Write-Verbose -Message ($script:localizedData.invokeCmComplete -f $(Get-FormattedDate), $Cluster, $PSBoundParameters.Name)
+                Write-Verbose -Message ($script:localizedData.invokeCmComplete -f $(Get-FormattedDate), $Cluster.ToUpper(), $PSBoundParameters.Name)
             }
             else
             {
-                throw ($script:localizedData.failedfunction -f $(Get-FormattedDate), 'Resume-CmClusterNode', $Cluster, $PSBoundParameters.Name)
+                throw ($script:localizedData.failedfunction -f $(Get-FormattedDate), 'Resume-CmClusterNode', $Cluster.ToUpper(), $PSBoundParameters.Name)
             }
         }
         catch
         {
-            Write-Verbose -Message ($script:localizedData.invokeCmFailed -f $(Get-FormattedDate), $Cluster, $PSBoundParameters.Name)
+            Write-Verbose -Message ($script:localizedData.invokeCmFailed -f $(Get-FormattedDate), $Cluster.ToUpper(), $PSBoundParameters.Name)
             throw $_
         }
     }
