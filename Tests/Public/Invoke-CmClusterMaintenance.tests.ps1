@@ -1,4 +1,4 @@
-$scriptPath = Resolve-Path -Path $PSScriptRoot\..\..\Private\Invoke-CmClusterMaintenance.ps1
+$scriptPath = Resolve-Path -Path $PSScriptRoot\..\..\Public\Invoke-CmClusterMaintenance.ps1
 Import-Module $scriptPath.Path
 
 Describe 'Invoke-CmClusterMaintenance' {

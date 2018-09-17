@@ -1,0 +1,4 @@
+Release/
+stats.json
+testResult*.xml
+launch.json
