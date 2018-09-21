@@ -28,7 +28,7 @@ function Test-CmClusterNode
     $PSBoundParameters.ErrorAction = 'Stop'
 
     # Setting stopwatch to capture elapsed time so that we can break out of the while based on the TimeOut value
-    $stopWatch = Start-StopWatch
+    $stopWatch = [System.Diagnostics.Stopwatch]::StartNew()
 
     # Setting nodePausedComplete to false
     $testResults = $false

@@ -1,6 +1,7 @@
-$preReqScriptPath = Resolve-Path -Path $PSScriptRoot\..\..\Private\Get-FormattedDate.ps1
-$scriptPath = Resolve-Path -Path $PSScriptRoot\..\..\Private\Test-CmClusterNode.ps1
-Import-Module -Name $preReqScriptPath.Path, $scriptPath.Path -Force
+$scriptPath = @()
+$scriptPath += Resolve-Path -Path $PSScriptRoot\..\..\Private\Get-FormattedDate.ps1
+$scriptPath += Resolve-Path -Path $PSScriptRoot\..\..\Private\Test-CmClusterNode.ps1
+Import-Module -Name $scriptPath.Path -Force
 
 Describe 'Test-CmClusterNode' {
     Context 'Resume tests with up and down node states' {
@@ -104,7 +105,7 @@ Describe 'Test-CmClusterNode' {
                     StatusInformation = 'Normal'
                 }
             }
-            $result = Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 5
+            $result = Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 1
             $result | Should -Be $true
         }
 
@@ -118,7 +119,7 @@ Describe 'Test-CmClusterNode' {
                     StatusInformation = 'Normal'
                 }
             }
-            $result = Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 5
+            $result = Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 1
             $result | Should -Be $false
         }
 
@@ -132,7 +133,7 @@ Describe 'Test-CmClusterNode' {
                     StatusInformation = 'Normal'
                 }
             }
-            $result = Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 5
+            $result = Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 1
             $result | Should -Be $false
         }
 
@@ -146,7 +147,7 @@ Describe 'Test-CmClusterNode' {
                     StatusInformation = 'Normal'
                 }
             }
-            $result = Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 5
+            $result = Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 1
             $result | Should -Be $false
         }
 
@@ -160,7 +161,7 @@ Describe 'Test-CmClusterNode' {
                     StatusInformation = 'Normal'
                 }
             }
-            $result = Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 5
+            $result = Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 1
             $result | Should -Be $false
         }
 
@@ -174,7 +175,7 @@ Describe 'Test-CmClusterNode' {
                     StatusInformation = 'Normal'
                 }
             }
-            $result = Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 5
+            $result = Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 1
             $result | Should -Be $false
         }
     }
@@ -182,7 +183,7 @@ Describe 'Test-CmClusterNode' {
     Context 'Regardless of test type, checking Get-ClusterNode failure try/catch' {
         It 'Attempts to query cluster node state using Get-ClusterNode, but fails with terminating error' {
             Mock -CommandName Get-ClusterNode -MockWith { throw 'this is a test' } -Verbose
-            { Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 5 } | Should throw 'this is a test'
+            { Test-CmClusterNode -Cluster 'TestCluster' -Name 'NODE1' -TestType 'Suspend' -TimeOut 1 } | Should throw 'this is a test'
         }
     }
 }

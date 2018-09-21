@@ -1,6 +1,7 @@
-$preReqScriptPath = Resolve-Path -Path $PSScriptRoot\..\..\Private\Get-FormattedDate.ps1
-$scriptPath = Resolve-Path -Path $PSScriptRoot\..\..\Private\Resume-CmClusterNode.ps1
-Import-Module -Name $preReqScriptPath.Path, $scriptPath.Path -Force
+$scriptPath = @()
+$scriptPath += Resolve-Path -Path $PSScriptRoot\..\..\Private\Get-FormattedDate.ps1
+$scriptPath += Resolve-Path -Path $PSScriptRoot\..\..\Private\Resume-CmClusterNode.ps1
+Import-Module -Name $scriptPath.Path -Force
 
 Describe 'Resume-CmClusterNode' {
     It 'Attempts to resume a cluster node, but returns an error' {

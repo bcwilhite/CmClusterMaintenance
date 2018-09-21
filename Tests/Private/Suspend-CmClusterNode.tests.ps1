@@ -1,6 +1,7 @@
-$preReqScriptPath = Resolve-Path -Path $PSScriptRoot\..\..\Private\Get-FormattedDate.ps1
-$scriptPath = Resolve-Path -Path $PSScriptRoot\..\..\Private\Suspend-CmClusterNode.ps1
-Import-Module -Name $preReqScriptPath.Path, $scriptPath.Path -Force
+$scriptPath = @()
+$scriptPath += Resolve-Path -Path $PSScriptRoot\..\..\Private\Get-FormattedDate.ps1
+$scriptPath += Resolve-Path -Path $PSScriptRoot\..\..\Private\Suspend-CmClusterNode.ps1
+Import-Module -Name $scriptPath.Path -Force
 
 Describe 'Suspend-CmClusterNode' {
     It 'Attempts to suspend a cluster node, but fails with terminating error' {
