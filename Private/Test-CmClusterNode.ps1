@@ -95,35 +95,35 @@ function Test-CmClusterNode
                     {
                         'NotInitiated'
                         {
-                            # setting nodePausedCompeted to false and breaking out of the switch
+                            # setting testResults to false and breaking out of the switch
                             $testResults = $false
                             break
                         }
 
                         'InProgress'
                         {
-                            # setting nodePausedCompeted to false and breaking out of the switch
+                            # setting testResults to false and breaking out of the switch
                             $testResults = $false
                             break
                         }
 
                         'Completed'
                         {
-                            # setting nodePausedCompeted to true and breaking out of the while
+                            # setting testResults to true and breaking out of the while
                             $testResults = $true
                             break breakOut
                         }
 
                         'Failed'
                         {
-                            # setting nodePausedCompeted to false and breaking out of the while
+                            # setting testResults to false and breaking out of the while
                             $testResults = $false
                             break breakOut
                         }
 
                         Default
                         {
-                            # if the above four conditions do not apply; setting nodePausedCompeted to false
+                            # if the above four conditions do not apply; setting testResults to false
                             $testResults = $false
                         }
                     }

@@ -19,7 +19,7 @@ Describe 'Test-CmClusterNode' {
             $result | Should -Be $true
         }
 
-        It 'Uses the Resume test type to ensure the node is up, when the node is down, should return $false' {
+        It 'Uses the Resume test type to ensure the node is up, hits TimeOut due to the node being "down", should return $false' {
             Mock -CommandName Get-ClusterNode -MockWith {
                 return @{
                     Cluster           = 'TestCluster'
@@ -49,7 +49,7 @@ Describe 'Test-CmClusterNode' {
             $result | Should -Be $true
         }
 
-        It 'Uses the Start test type to ensure the node is paused, when the node is down, should return $false' {
+        It 'Uses the Start test type to ensure the node is paused, hits TimeOut due to the node being "down", should return $false' {
             Mock -CommandName Get-ClusterNode -MockWith {
                 return @{
                     Cluster           = 'TestCluster'
@@ -79,7 +79,7 @@ Describe 'Test-CmClusterNode' {
             $result | Should -Be $true
         }
 
-        It 'Uses the Stop test type to ensure the node is down, when the node is up, should return $false' {
+        It 'Uses the Stop test type to ensure the node is down, hits TimeOut due to the node being "up", should return $false' {
             Mock -CommandName Get-ClusterNode -MockWith {
                 return @{
                     Cluster           = 'TestCluster'
@@ -109,7 +109,7 @@ Describe 'Test-CmClusterNode' {
             $result | Should -Be $true
         }
 
-        It 'Uses the Suspend test type to ensure the node is paused/completed, when the node is paused/notinitiated, should return $false' {
+        It 'Uses the Suspend test type to ensure the node is paused/completed, hits TimeOut due to node paused/notinitiated, should return $false' {
             Mock -CommandName Get-ClusterNode -MockWith {
                 return @{
                     Cluster           = 'TestCluster'
@@ -123,7 +123,7 @@ Describe 'Test-CmClusterNode' {
             $result | Should -Be $false
         }
 
-        It 'Uses the Suspend test type to ensure the node is paused/completed, when the node is paused/inprogress, should return $false' {
+        It 'Uses the Suspend test type to ensure the node is paused/completed, hits TimeOut due to node paused/inprogress, should return $false' {
             Mock -CommandName Get-ClusterNode -MockWith {
                 return @{
                     Cluster           = 'TestCluster'
@@ -151,7 +151,7 @@ Describe 'Test-CmClusterNode' {
             $result | Should -Be $false
         }
 
-        It 'Uses the Suspend test type to ensure the node is paused/completed, when the node is paused/UNDETERMINED (bogus state), should return $false' {
+        It 'Uses the Suspend test type to ensure the node is paused/completed, hits TimeOut due to node paused/UNDETERMINED (bogus state), should return $false' {
             Mock -CommandName Get-ClusterNode -MockWith {
                 return @{
                     Cluster           = 'TestCluster'
