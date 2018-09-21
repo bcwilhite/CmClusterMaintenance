@@ -28,7 +28,7 @@ function Test-CmClusterNode
     $PSBoundParameters.ErrorAction = 'Stop'
 
     # Setting stopwatch to capture elapsed time so that we can break out of the while based on the TimeOut value
-    $stopWatch = [System.Diagnostics.Stopwatch]::StartNew()
+    $stopWatch = Start-StopWatch
 
     # Setting nodePausedComplete to false
     $testResults = $false
@@ -36,8 +36,8 @@ function Test-CmClusterNode
     # Looping until $TimeOut expires or testResults equals $true; :breakOut is a label for the while statement, used with the break statement
     :breakOut while ($testResults -ne $true)
     {
-        if ($stopWatch.Elapsed.TotalSeconds -ge $TimeOut)
-        {
+        if ($stopWatch.Elapsed.TotalSeconds -ge $TimeOut) {
+            $timerExpired = $true
             break breakOut
         }
         # try to query the node drain status from the clustered node
@@ -136,5 +136,9 @@ function Test-CmClusterNode
 
     # return true/false to the calling function
     Write-Verbose -Message ($script:localizedData.currentNodeState -f $(Get-FormattedDate), $Cluster.ToUpper(), $Name.ToUpper(), $($nodeStatus.State), $($nodeStatus.DrainStatus))
+    if ($timerExpired)
+    {
+        Write-Verbose -Message ($script:localizedData.timerExpired -f $(Get-FormattedDate), $TimeOut, $Cluster.ToUpper(), $Name.ToUpper())
+    }
     return $testResults
 }

@@ -9,6 +9,7 @@ ConvertFrom-StringData @'
     failedToQuery      = [{0}]: Failed to query Node Status information from Cluster "{1}" Target "{2}", Cluster Maintenance has been aborted.
     failedfunction     = [{0}]: '{1}' failed for Cluster "{2}" Target {3}.
     currentNodeState   = [{0}]: Current Node Status - Cluster "{1}" Target "{2}" {3} {4}.
+    timerExpired       = [{0}]: The defined TimeOut period of {1} seconds expired for Cluster "{2}" Target {3}.
     progActvFirstMsg   = Performing maintenance on Cluster "{0}" Target "{1}"
     progStatusMsg      = Node {0} of {1} currently processing... Percent Complete: {2}%
     progActvSecondMsg  = Performing 'Suspend-CmClusterNode' on {0}
