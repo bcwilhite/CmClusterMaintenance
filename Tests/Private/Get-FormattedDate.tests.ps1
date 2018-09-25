@@ -1,8 +1,9 @@
 $scriptPath = Resolve-Path -Path $PSScriptRoot\..\..\Private\Get-FormattedDate.ps1
-Import-Module $scriptPath.Path
+Import-Module $scriptPath.Path -Force
 
 Describe 'Get-FormattedDate' {
-    It 'Needs to have real tests' {
-        $true | Should -Be $true
+    It 'Returns a universal date string' {
+        $format = (Get-Culture).DateTimeFormat.UniversalSortableDateTimePattern
+        Get-FormattedDate | Should -Be (Get-Date -Format $format)
     }
 }

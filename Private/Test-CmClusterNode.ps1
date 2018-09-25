@@ -30,7 +30,7 @@ function Test-CmClusterNode
     # Setting stopwatch to capture elapsed time so that we can break out of the while based on the TimeOut value
     $stopWatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-    # Setting nodePausedComplete to false
+    # Setting testResults to false
     $testResults = $false
 
     # Looping until $TimeOut expires or testResults equals $true; :breakOut is a label for the while statement, used with the break statement
