@@ -22,12 +22,14 @@ Deploy the root folder to you PSModulePath, i.e. CmClusterMaintenance and PowerS
 
 ```PowerShell
     {param($<name1>[, $<name2>]...) <command-with-local-variables>} -ArgumentList <value> -or- <local-variable>
-    # The "param" keyword lists the local variables that are used in the command. The ArgumentList parameter supplies the values of the variables, in the order that they are listed.
+    # The "param" keyword lists the local variables that are used in the command.
+    # The ArgumentList parameter supplies the values of the variables, in the order that they are listed.
 
     or
 
     $localVariable = 'Data is stored here'
-    Invoke-CmClusterMaintenance -Cluster <ClusterName> -ScriptBlock {$using:localVariable} -ArgumentList $localVariable -RebootNode
+    $scriptBlock   = {$using:localVariable}
+    Invoke-CmClusterMaintenance -Cluster <ClusterName> -ScriptBlock $scriptBlock -ArgumentList $localVariable
 ```
 
 * **TimeOut**: Specifies the number of seconds in which the function will wait for the drain action to complete for a node.  If the TimeOut expires, then the function will fail for the cluster.
