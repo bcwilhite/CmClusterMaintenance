@@ -6,11 +6,13 @@ Module used to automate Windows Failover Cluster Maintenance
 
 Deploy the root folder to you PSModulePath, i.e. CmClusterMaintenance and PowerShell will automatically find/load the module.
 
+This module/function will Suspend, Stop, Start and Resume a single node with verification for each phase, perform an action which is defined by the specified scriptblock.  The scriptblock invocation and optional reboot occurs between the Stop and Start Cluster node phase.
+
 **NOTE:** If a node drain fails, then the function will stop and take no further action for the entire cluster.  Further cleanup from the failure will be required.
 
 ## Functions
 
-* **Invoke-CmClusterMaintenance** Start maintenance on all nodes in a cluster, coordinating node drain and reboot (optional).
+* **Invoke-CmClusterMaintenance** Starts maintenance for each node in a cluster, coordinating node drain and reboot (optional).
 
 ### Invoke-CmClusterMaintenance
 
