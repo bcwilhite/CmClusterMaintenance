@@ -1,5 +1,7 @@
 # CmClusterMaintenance
 
+[![Build status](https://ci.appveyor.com/api/projects/status/td2dmi2hydmo5k20/branch/master?svg=true)](https://ci.appveyor.com/project/bcwilhite/cmclustermaintenance/branch/master)
+
 Module used to automate Windows Failover Cluster Maintenance
 
 ## How to use
