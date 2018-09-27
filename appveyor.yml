@@ -9,6 +9,8 @@ install:
 - ps: >-
     Write-Host 'Installing NuGet PackageProvider'
 
+    Install-WindowsFeature -Name RSAT-Clustering-PowerShell
+
     $pkg = Install-PackageProvider -Name NuGet -Force -ErrorAction Stop
 
     Write-Host "Installed NuGet version '$($pkg.version)'"
