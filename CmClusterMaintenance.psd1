@@ -3,7 +3,7 @@
     RootModule = 'CmClusterMaintenance.psm1'
 
     # Version number of this module.
-    ModuleVersion = '0.4.6'
+    ModuleVersion = '0.4.7'
 
     # ID used to uniquely identify this module
     GUID = '0edaa30e-a4ab-4a8d-a3ce-528f1f5356d0'
@@ -28,6 +28,8 @@
         PSData = @{
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags = @('CmClusterMaintenance')
+
+            ExternalModuleDependencies = @('FailoverClusters')
 
             # A URL to the license for this module.
             LicenseUri = 'https://github.com/bcwilhite/CmClusterMaintenance/blob/master/LICENSE'
