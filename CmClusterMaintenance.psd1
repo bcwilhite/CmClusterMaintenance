@@ -3,7 +3,7 @@
     RootModule = 'CmClusterMaintenance.psm1'
 
     # Version number of this module.
-    ModuleVersion = '0.4.0'
+    ModuleVersion = '0.4.6'
 
     # ID used to uniquely identify this module
     GUID = '0edaa30e-a4ab-4a8d-a3ce-528f1f5356d0'

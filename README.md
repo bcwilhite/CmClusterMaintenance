@@ -41,7 +41,7 @@ This module/function will Suspend, Stop, Start and Resume a single node with ver
 
 ## Versions
 
-### 0.4.0
+### 0.4.6
 
 * Initial Release
 
