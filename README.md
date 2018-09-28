@@ -6,7 +6,12 @@ Module used to automate Windows Failover Cluster Maintenance
 
 ## How to use
 
-Deploy the root folder to you PSModulePath, i.e. CmClusterMaintenance and PowerShell will automatically find/load the module.
+Deploy the CmClusterMaintenance folder from the Release folder to your PSModulePath, i.e. CmClusterMaintenance and PowerShell will automatically find/load the module.
+This module is also published on the [PowerShell Gallery](https://www.powershellgallery.com/packages/cmclustermaintenance), therefore installing it via PowerShell is also an option:
+
+```PowerShell
+Install-Module -Name CmClusterMaintenance
+```
 
 This module/function will Suspend, Stop, Start and Resume a single node with verification for each phase, perform an action which is defined by the specified scriptblock.  The scriptblock invocation and optional reboot occurs between the Stop and Start Cluster node phase.
 
